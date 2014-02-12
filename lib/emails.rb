@@ -25,10 +25,10 @@ class Emails
     completed_email = CompletedEmail.new(:to => emails.join(","), :subject => subject,
         :result => "success")
 
-    user, domain = GMAIL_ADDRESS.split("@")
+    user, domain = EMAIL_SMTP_USERNAME.split("@")
     pony_options = pony_options_for_commit(commit).merge({
       # Make the From: address e.g. "barkeep+requests@gmail.com" so it's easily filterable.
-      :from => "#{user}+requests@#{domain}"
+      :from => EMAIL_FROM_ADDRESS || "#{user}+requests@#{domain}"
     })
 
     begin
@@ -67,10 +67,10 @@ class Emails
     completed_email = CompletedEmail.new(:to => to.join(","), :subject => subject,
         :result => "success", :comment_ids => comments.map(&:id).join(","))
 
-    user, domain = GMAIL_ADDRESS.split("@")
+    user, domain = EMAIL_SMTP_USERNAME.split("@")
     pony_options = pony_options_for_commit(commit).merge(
       # Make the From: address e.g. "barkeep+comments@gmail.com" so it's easily filterable.
-      :from => "#{user}+comments@#{domain}"
+      :from => EMAIL_FROM_ADDRESS || "#{user}+comments@#{domain}"
     )
 
     begin
@@ -98,10 +98,10 @@ class Emails
 
     return if to.empty? # Sometimes... there's just nobody listening.
 
-    user, domain = GMAIL_ADDRESS.split("@")
+    user, domain = EMAIL_SMTP_USERNAME.split("@")
     pony_options = pony_options_for_commit(commit).merge({
       # Make the From: address e.g. "barkeep+commits@gmail.com" so it's easily filterable.
-      :from => "#{user}+commits@#{domain}"
+      :from => EMAIL_FROM_ADDRESS || "#{user}+commits@#{domain}"
     })
 
     deliver_mail(to.join(","), subject, html_body, pony_options)
@@ -148,19 +148,31 @@ class Emails
   # "message-ID" to enable threading.
   # Subject forced to utf-8 to avoid issues with mail encodings (ooyala/barkeep#285)
   def self.deliver_mail(to, subject, html_body, pony_options = {})
-    options = { :to => to, :via => :smtp, :subject => subject.force_encoding("utf-8"), :html_body => html_body,
+    options = { 
+      :to => to, 
+      :via => :smtp, 
+      :subject => subject.force_encoding("utf-8"), 
+      :html_body => html_body,
       # These settings are from the Pony documentation and work with Gmail's SMTP TLS server.
       :via_options => {
-        :address => "smtp.gmail.com",
-        :port => "587",
-        :enable_starttls_auto => true,
-        :user_name => GMAIL_ADDRESS,
-        :password => GMAIL_PASSWORD,
+        :address => (EMAIL_SMTP_SERVER || "smtp.gmail.com"),
+        :port => (EMAIL_SMTP_PORT || "587"),
+        :enable_starttls_auto => (EMAIL_SMTP_TLS.to_s == "true" ? true : false ),
+        :user_name => EMAIL_SMTP_USERNAME,
+        :password => EMAIL_SMTP_PASSWORD,
         :authentication => :plain,
         # the HELO domain provided by the client to the server
-        :domain => "localhost.localdomain"
+        :domain => EMAIL_SMTP_DOMAIN || "localhost.localdomain"
       }
     }
+    if EMAIL_SMTP_AUTHENTICATION && EMAIL_SMTP_AUTHENTICATION.to_sym != :none
+      options[:via_options].merge!({
+        :user_name => EMAIL_SMTP_USERNAME,
+        :password => EMAIL_SMTP_PASSWORD,
+        :authentication => EMAIL_SMTP_AUTHENTICATION.to_sym
+      })
+    end
+
     begin
       Pony.mail(options.merge(pony_options))
     rescue Net::SMTPAuthenticationError => error

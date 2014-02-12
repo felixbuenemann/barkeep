@@ -4,10 +4,17 @@ DB_NAME = "barkeep"
 DB_USER = "root"
 DB_PASSWORD = ""
 
+EMAIL_SMTP_SERVER = "smtp.gmail.com"
+EMAIL_SMTP_PORT = "587"
+EMAIL_SMTP_TLS = true
+EMAIL_SMTP_DOMAIN = "localhost.localdomain"
 # These are the credentials of the Gmail account that you want to send mail as.
 # NOTE(philc): We may want to make configuration variables which generically support SMTP.
-GMAIL_ADDRESS = ""
-GMAIL_PASSWORD = ""
+EMAIL_SMTP_AUTHENTICATION = :plain
+EMAIL_SMTP_USERNAME = "use_your_own_account@gmail.com"
+EMAIL_SMTP_PASSWORD = "password!"
+# Make the From: address e.g. "barkeep+requests@gmail.com" so it's easily filterable.
+EMAIL_FROM_ADDRESS = "use_your_own_account+barkeep@gmail.com"
 
 # This a list of paths to git repos we should watch.
 REPOS_ROOT = "#{ENV["HOME"]}/barkeep_repos"

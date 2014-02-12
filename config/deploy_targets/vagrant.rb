@@ -7,8 +7,8 @@ Fezzik.destination :vagrant do
   BarkeepDeploy.include_common_deploy_options
   Fezzik.env :unicorn_workers, 2
   # Replace these with your own Gmail account credentials if you want to test Barkeep's email features.
-  Fezzik.env :gmail_address, "use_your_own_account@gmail.com"
-  Fezzik.env :gmail_password, "password!"
+  Fezzik.env :email_smtp_username, "use_your_own_account@gmail.com"
+  Fezzik.env :email_smtp_password, "password!"
    # This secret is used to encrypt session information into cookies.
   Fezzik.env :cookie_session_secret, "This should be a long, random, secret string."
   # This "deploy_user" is the user that code will be deployed and run as.

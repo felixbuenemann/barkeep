@@ -52,7 +52,7 @@ sudo mv upstart_scripts/* /etc/init
 cp environment.prod.rb environment.rb
 cp environment.prod.sh environment.sh
 echo "******************************"
-echo "To configure sending emails from Barkeep, edit GMAIL_ADDRESS and GMAIL_PASSWORD\
+echo "To configure sending emails from Barkeep, edit EMAIL_SMTP_USERNAME and EMAIL_SMTP_PASSWORD\
  in environment.rb and run: sudo restart barkeep"
 echo "******************************"
 sudo start barkeep
