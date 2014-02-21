@@ -40,6 +40,8 @@ gem "clockwork"
 
 # For running all of our background processes together from a single developer-friendly command.
 gem "foreman"
+# Add initscript export support to foreman
+gem 'foreman-export-initscript'
 
 # For sending emails.
 gem "pony"
