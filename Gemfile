@@ -71,6 +71,9 @@ gem "therubyracer"
 # For scripting system setup.
 gem "terraform"
 
+# For LDAP signins
+gem "net-ldap"
+
 gem "nokogiri"
 gem "fezzik"
 
