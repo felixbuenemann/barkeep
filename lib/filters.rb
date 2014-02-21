@@ -50,7 +50,7 @@ end
 # See https://github.com/blog/831-issues-2-0-the-next-generation
 # for the list of issue linking synonyms.
 StringFilter.define_filter :link_github_issue do |str, github_username, github_repo|
-  str.gsub(/(#|gh-)(\d+)/i) do
+  str.gsub(/((?<!&)#|gh-)(\d+)/i) do
     prefix = Regexp.last_match(1)
     number = Regexp.last_match(2)
     "<a href='https://github.com/#{github_username}/#{github_repo}/issues/#{number}' target='_blank'>" +
