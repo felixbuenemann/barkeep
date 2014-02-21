@@ -20,7 +20,6 @@ class RedisManager
   end
 
   def self.reconnect
-    @@redis = nil
-    redis_instance
+    redis_instance.client.reconnect
   end
 end
