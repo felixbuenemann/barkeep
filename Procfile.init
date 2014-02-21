@@ -1,0 +1,6 @@
+# This is used by the Foreman gem, which we use to start our web server and the background jobs.
+# In production, this file is used as a basis for generating Upstart daemon scripts.
+web: bin/run_app.bash
+cron: bundle exec script/run_clockwork.rb
+fetcher: bundle exec rake resque:work QUEUE=fetch_commits
+worker: bundle exec rake resque:work QUEUE=db_commit_ingest,clone_new_repo,delete_repo,delete_old_comments_by_demo_users,deliver_review_request_emails,deliver_comment_emails,batch_comment_emails,deliver_commit_emails,generate_tagged_diffs
