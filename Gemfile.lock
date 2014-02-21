@@ -1,9 +1,9 @@
 GIT
-  remote: http://github.com/ooyala/grit.git
-  revision: 38d0e6660b78bff97499280fae09a78b087c50b4
-  ref: 38d0e6660b78bff97499280fae09a78b087c50b4
+  remote: https://github.com/BertramScharpf/grit
+  revision: add656a149df57755ba71a709bd3b41bc2e80a48
+  branch: bsch
   specs:
-    grit (2.4.1)
+    grit (2.5.0)
       diff-lcs (~> 1.1)
       mime-types (~> 1.15)
       posix-spawn (~> 0.3.6)
