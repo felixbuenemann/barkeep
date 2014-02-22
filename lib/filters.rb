@@ -17,7 +17,7 @@ StringFilter.define_filter :replace_shas_with_links do |str, repo_name, options 
     repo = Regexp.last_match(3) || repo_name
     sha = Regexp.last_match(4)
     if options[:skip_markdown]
-      " <a href='/commits/#{repo}/#{sha}' target='_blank'>#{sha[0..6]}</a>"
+      " <a href='/commits/#{repo}/#{sha}'>#{sha[0..6]}</a>"
     else
       " [#{sha[0..6]}](/commits/#{repo}/#{sha})"
     end
