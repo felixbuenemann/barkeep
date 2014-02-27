@@ -165,12 +165,16 @@ class Emails
         :domain => EMAIL_SMTP_DOMAIN || "localhost.localdomain"
       }
     }
-    if EMAIL_SMTP_AUTHENTICATION && EMAIL_SMTP_AUTHENTICATION.to_sym != :none
-      options[:via_options].merge!({
-        :user_name => EMAIL_SMTP_USERNAME,
-        :password => EMAIL_SMTP_PASSWORD,
-        :authentication => EMAIL_SMTP_AUTHENTICATION.to_sym
-      })
+    if EMAIL_SMTP_AUTHENTICATION
+      if EMAIL_SMTP_AUTHENTICATION.to_sym == :none
+	[:user_name, :password, :authentication].each {|k| options[:via_options].delete(k) }
+      else
+        options[:via_options].merge!({
+          :user_name => EMAIL_SMTP_USERNAME,
+          :password => EMAIL_SMTP_PASSWORD,
+          :authentication => EMAIL_SMTP_AUTHENTICATION.to_sym
+        })
+      end
     end
 
     begin
