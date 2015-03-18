@@ -247,8 +247,9 @@ class BarkeepServer < Sinatra::Base
     begin
       Timeout::timeout(5) do
         conn_params = { :host => provider[:host], :port => provider[:port] }
+        conn_params[:encryption] = provider[:encryption] if provider.has_key?(:encryption)
         auth_params = { :method => provider[:method] }
-        
+
         if provider.has_key?(:username)
           # Here we use separate credentials, i.e. those in the config file, to query
           # the LDAP server in order to locate the correct user entry.
